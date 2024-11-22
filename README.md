@@ -46,3 +46,5 @@ QuoNotes is now defunct and this repo contains an api-clean version of the most 
   - Web App
     - QuoNotes uses ReactJS for the front end and used Firebase for various backend features as well as for live web hosting
    
+### Notes
+  - This repo is a duplicate of the private version with all sensitive information removed
