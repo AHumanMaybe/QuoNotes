@@ -1,0 +1,153 @@
+.chatbox-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+    flex-direction: column;
+    padding: 10px;
+  }
+  
+  .chatbox{
+    width: 100%;
+    max-width: 800px;
+    height: 60vh;
+    margin: 0 auto;
+    margin-top: 50px;
+    border: 3px solid #6A6A6A;
+    border-radius: 10px;
+    padding: 20px;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+  
+  .chatbox::-webkit-scrollbar{
+    width: 10px;
+  }
+  .chatbox::-webkit-scrollbar-thumb{
+    background-color: #404040;
+    border-radius: 6px;
+  }
+  .chatbox::-webkit-scrollbar-thumb:hover{
+    background-color: #6A6A6A;
+  }
+  
+  .formbox{
+    width: 100%;
+    max-width: 600px;
+    border: none;
+    background-color: #1E1E1E;
+    border-radius: 5px;
+    padding: 1vh;
+    color: #fff;
+    font-family: 'Inter', 'Tahoma', Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    outline: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .textbox{
+    margin-right: 2vh;
+    width: 50vh;
+    max-width: 50vh;
+    border: none;
+    background-color: #404040;
+    border-radius: 5px;
+    color: #fff;
+    padding: 0.5vh;
+    font-family: 'Inter', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    outline: none;
+  }
+
+.chat-history{
+    width: 100%;
+    list-style: none;
+    font-family: 'Inter', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .chat-history li{
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .user-message{
+    width: 80%;
+    max-width: 300px;
+    height: auto;
+    background-color: #027333;
+    border-radius: 15px;
+    border-bottom-right-radius: 0%;
+    cursor: pointer;
+    display: flex;
+    margin-left: auto;
+    align-self: flex-end;
+    justify-content: start;
+    align-items: start;
+    border: none;
+    padding: 20px;
+  }
+  
+  .ai-message{
+    width: 80%;
+    max-width: 300px;
+    height: auto;
+    background-color: #D0E3D6;
+    border-radius: 15px;
+    border-bottom-left-radius: 0%;
+    cursor: pointer;
+    display: flex;
+    margin-right: auto;
+    align-self: flex-start;
+    justify-content: start;
+    align-items: start;
+    border: none;
+    padding: 20px;
+  }
+  
+  .submit-button{
+    margin-left: 2vh;
+    padding: 10px 20px; /* Add padding for width and height */
+  border-radius: 8px; /* Set the border radius for rounded corners */
+  background-color: #D0E3D6;
+  color: #1E1E1E;
+  border: none; /* Remove any border if needed */
+  font-family: 'Inter', Tahoma, Geneva, Verdana, sans-serif; /* Ensure consistent font */
+  font-size: 24px; /* Set the font size */
+  font-weight: 500; /* Set the font weight */
+  cursor: pointer; /* Change cursor to pointer */
+  display: flex; /* Center the content inside */
+  justify-content: center; /* Center the content inside */
+  align-items: center; /* Center the content inside */
+  }
+  
+  .submit-button:hover{
+    background-color: #027333;
+  }
+
+  @media (max-width: 768px) {
+    .user-message, .ai-message {
+      width: 90%;
+      max-width: 100%;
+      padding: 15px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .user-message, .ai-message {
+      width: 100%;
+      max-width: 100%;
+      padding: 10px;
+    }
+  }
+  

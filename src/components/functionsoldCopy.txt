@@ -1,0 +1,78 @@
+const {onObjectFinalized, onObjectArchived} = require("firebase-functions/v2/storage");
+const {initializeApp} = require("firebase-admin/app");
+const {getStorage} = require("firebase-admin/storage");
+const logger = require("firebase-functions/logger");
+const path = require("path");
+
+//pinecone and vector embeddings
+const pinecone = require( "@pinecone-database/pinecone");
+const openai = require("openai")
+const client = new openai.OpenAI({
+    organization: 'org-QUaHmWhwYEDR0cU6TZlIk278',
+    project: 'proj_GgHXjZVcz3J8wO5D0qdmEqyQ',
+    apiKey: 'sk-proj-aUcplJFhi4dXMW3t54VcT3BlbkFJ7ysABksBuhmQZDPecLRD',
+})
+const pc = new pinecone.Pinecone({
+    apiKey: 'c8b43009-7c6f-4259-ae45-131564491c37'
+});
+const index = pc.index('xandria-dev')
+
+// library for pdf processing
+const pdf = require("pdf-parse");
+
+//imports for query
+const { onCall, HttpsError } = require("firebase-functions/v2/https")
+const { getDatabase } = require("firebase-admin/database")
+
+initializeApp();
+
+exports.textExtraction = onObjectFinalized({cpu: 2}, async (event) => {
+    const fileBucket = event.data.bucket; // Storage bucket containing the file.
+    const filePath = event.data.name; // File path in the bucket.
+    const contentType = event.data.contentType; // File content type.
+    // Exit if this is triggered on a file that is not an pdf.
+    if (!contentType.startsWith("application/pdf")) {
+        return logger.log("not a pdf");
+    }
+
+    try {
+        const bucket = getStorage().bucket(fileBucket);
+        const downloadResponse = await bucket.file(filePath).download();
+        const pdfBuffer = downloadResponse[0];
+        logger.log('PDF downloaded.');
+            
+        const data = await pdf(pdfBuffer);
+        
+        logger.log(`Number of pages in ${filePath}: ${data.numpages}`);
+        logger.log(`Number of pages in ${filePath}: ${data.text}`);
+
+        //turn extracted text into vector of text embeddings
+        const response = await client.embeddings.create({
+            model: 'text-embedding-ada-002',
+            input: data.text,
+        });
+
+        const embedding = response.data[0].embedding;
+
+        //insert text embeddings into pinecone
+        await index.namespace('ns1').upsert([
+            {
+                id: filePath,
+                values: embedding,
+            }
+        ]);
+
+        logger.log('Text and embedding store in Pinecone.')
+
+
+    } catch (error) {
+        logger.error("Error processing PDF:", error);
+    }
+    
+})
+
+exports.addmessage = onCall((request) => {
+    const text = request.data.text
+    logger.log('Queried text: ',text)
+    return { text: text }
+})
